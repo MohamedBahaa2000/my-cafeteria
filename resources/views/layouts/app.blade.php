@@ -1,39 +1,69 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@yield('title', 'My Cafeteria')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+</head>
+<body>
 
-         <title>@yield('title', 'Cafeteria')</title>
-         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
-                @yield('content')
-            </main>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">My Cafeteria</a>
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    @auth
+                        <li class="nav-item"><a href="{{ route('shop') }}" class="nav-link">🏪 Shop</a></li>
+                        <li class="nav-item"><a href="{{ route('cart.view') }}" class="nav-link">🛒 Cart</a></li>
+                        <li class="nav-item"><a href="{{ route('myorders.index') }}" class="nav-link">🧾 My Orders</a></li>
+                        @if(auth()->user()->is_admin)
+                            <li class="nav-item"><a href="{{ route('admin.dashboard') }}" class="nav-link">📊 Dashboard</a></li>
+                        @endif
+                    @endauth
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    @auth
+                        <li class="nav-item">
+                            <span class="navbar-text text-white me-3">👋 {{ auth()->user()->name }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button class="btn btn-sm btn-outline-light">Logout</button>
+                            </form>
+                        </li>
+                    @endauth
+                    @guest
+                        <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Login</a></li>
+                        <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Register</a></li>
+                    @endguest
+                </ul>
+            </div>
         </div>
-    </body>
+    </nav>
+
+    <!-- Main -->
+    <main class="py-4">
+        @yield('content')
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        © {{ date('Y') }} Cafeteria — All rights reserved.
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

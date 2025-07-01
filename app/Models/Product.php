@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    protected $fillable = [
-        'name',
-        'price',
-        'image',
-        'is_available',
-    ];
+    use SoftDeletes;
+
+    protected $fillable = ['name', 'price', 'is_available', 'image'];
+
+    public function orderItems()
+{
+    return $this->hasMany(OrderItem::class);
+}
+
 }

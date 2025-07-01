@@ -17,34 +17,33 @@
     @endif
 
     <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+    @csrf
 
-        <div class="mb-3">
-            <label for="name" class="form-label">Product Name:</label>
-            <input type="text" class="form-control" name="name" id="name" required value="{{ old('name') }}">
-        </div>
+    <div class="mb-3">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
 
-        <div class="mb-3">
-            <label for="price" class="form-label">Price (EGP):</label>
-            <input type="number" class="form-control" name="price" id="price" required step="0.01" value="{{ old('price') }}">
-        </div>
+    <div class="mb-3">
+        <label>Price</label>
+        <input type="number" name="price" step="0.01" class="form-control" required>
+    </div>
 
-        <div class="mb-3">
-            <label for="image" class="form-label">Product Image (optional):</label>
-            <input type="file" class="form-control" name="image" id="image" accept="image/*">
-        </div>
+    <div class="mb-3">
+        <label>Image</label>
+        <input type="file" name="image" accept="image/*" class="form-control">
+    </div>
 
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" name="is_available" id="is_available" {{ old('is_available') ? 'checked' : '' }}>
-            <label class="form-check-label" for="is_available">
-                Available for sale
-            </label>
-        </div>
+    <div class="mb-3">
+        <label>Available</label>
+        <select name="is_available" class="form-control">
+            <option value="1" selected>Available</option>
+            <option value="0">Not Available</option>
+        </select>
+    </div>
 
-        <div class="text-end">
-            <button type="submit" class="btn btn-success">Add Product</button>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancel</a>
-        </div>
-    </form>
+    <button class="btn btn-success">Save</button>
+</form>
+
 </div>
 @endsection
