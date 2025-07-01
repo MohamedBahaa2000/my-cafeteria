@@ -27,9 +27,18 @@
                         <li class="nav-item"><a href="{{ route('shop') }}" class="nav-link">🏪 Shop</a></li>
                         <li class="nav-item"><a href="{{ route('cart.view') }}" class="nav-link">🛒 Cart</a></li>
                         <li class="nav-item"><a href="{{ route('myorders.index') }}" class="nav-link">🧾 My Orders</a></li>
-                        @if(auth()->user()->is_admin)
-                            <li class="nav-item"><a href="{{ route('admin.dashboard') }}" class="nav-link">📊 Dashboard</a></li>
-                        @endif
+                        
+                       @if(auth()->user()->is_admin)
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('users.index') }}">👥 Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('products.index') }}">📦 Products</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.dashboard') }}">📊 Dashboard</a>
+    </li>
+@endif
                     @endauth
                 </ul>
                 <ul class="navbar-nav ms-auto">

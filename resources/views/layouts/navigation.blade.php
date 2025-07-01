@@ -20,9 +20,18 @@
     </li>
 
     @if(auth()->user()->is_admin)
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.dashboard') }}">📊 Dashboard</a>
-        </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.dashboard') }}">📊 Dashboard</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('users.index') }}">👥 Manage Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('products.index') }}">📦 Manage Products</a>
+    </li>
+@endif
+
+        
     @endif
 @endauth
 

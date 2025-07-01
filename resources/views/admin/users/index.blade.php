@@ -9,6 +9,7 @@
     @if(session('success'))
         <div class="alert alert-success text-center">{{ session('success') }}</div>
     @endif
+<a href="{{ route('users.create') }}" class="btn btn-primary mb-3">➕ Add New User</a>
 
     <table class="table table-bordered text-center align-middle">
         <thead class="table-light">
@@ -37,6 +38,8 @@
         @if(session('error'))
     <div class="alert alert-danger text-center">{{ session('error') }}</div>
 @endif
+<a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
+
 
     </form>
 </td>
