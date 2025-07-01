@@ -15,6 +15,7 @@ class OrderController extends Controller
         return view('user.orders.index', compact('orders'));
     }
 
+
     public function show($id)
     {
         $order = Order::with(['items.product' => function ($q) {

@@ -10,6 +10,26 @@
         <div class="alert alert-success text-center">{{ session('success') }}</div>
     @endif
 
+<a href="{{ route('orders.create') }}" class="btn btn-success mb-4">
+    ➕ Create Order
+</a>
+
+
+<form method="GET" action="{{ route('orders.index') }}" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label for="start_date" class="form-label">From Date</label>
+        <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}" class="form-control">
+    </div>
+    <div class="col-md-4">
+        <label for="end_date" class="form-label">To Date</label>
+        <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}" class="form-control">
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">🔍 Filter</button>
+    </div>
+</form>
+
+
     <table class="table table-bordered text-center align-middle">
         <thead class="table-light">
             <tr>

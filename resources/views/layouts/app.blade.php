@@ -26,7 +26,13 @@
                     @auth
                         <li class="nav-item"><a href="{{ route('shop') }}" class="nav-link">🏪 Shop</a></li>
                         <li class="nav-item"><a href="{{ route('cart.view') }}" class="nav-link">🛒 Cart</a></li>
-                        <li class="nav-item"><a href="{{ route('myorders.index') }}" class="nav-link">🧾 My Orders</a></li>
+                        @if(auth()->check() && !auth()->user()->is_admin)
+    {{-- رابط "My Orders" يظهر لليوزر فقط --}}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('myorders.index') }}">📦 My Orders</a>
+    </li>
+@endif
+
                         
                        @if(auth()->user()->is_admin)
     <li class="nav-item">
@@ -35,6 +41,10 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('products.index') }}">📦 Products</a>
     </li>
+    <li class="nav-item">
+    <a class="nav-link" href="{{ route('orders.index') }}">🧾 Manage Orders</a>
+</li>
+
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.dashboard') }}">📊 Dashboard</a>
     </li>

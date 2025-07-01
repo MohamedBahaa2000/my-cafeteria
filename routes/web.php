@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\User\ProductShopController;
-use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
+use App\Http\Controllers\Admin\AdminOrderController;
 
 
 
@@ -47,10 +47,17 @@ Route::post('/cart/place-order', [ProductShopController::class, 'placeOrder'])->
 });
 
 // admin orders
-Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class]) ->prefix('admin/orders')->name('orders.')->group(function () {
-Route::get('/', [OrderController::class, 'index'])->name('index');
-Route::get('/{id}', [OrderController::class, 'show'])->name('show');
-Route::post('/{id}/status', [OrderController::class, 'updateStatus'])->name('status');});
+Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
+    ->prefix('admin/orders')
+    ->name('orders.')
+    ->group(function () {
+        Route::get('/', [AdminOrderController::class, 'index'])->name('index');
+        Route::get('/create', [AdminOrderController::class, 'create'])->name('create');
+        Route::post('/', [AdminOrderController::class, 'store'])->name('store');
+        Route::get('/{id}', [AdminOrderController::class, 'show'])->name('show');
+        Route::post('/{id}/status', [AdminOrderController::class, 'updateStatus'])->name('status');
+    });
+
 
 // admin dashboard
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
@@ -71,5 +78,12 @@ Route::middleware(['auth'])->prefix('my-orders')->name('myorders.')->group(funct
 Route::get('/', [UserOrderController::class, 'index'])->name('index');
 Route::get('/{id}', [UserOrderController::class, 'show'])->name('show');
 Route::delete('/{id}/cancel', [UserOrderController::class, 'cancel'])->name('cancel');});
+
+// admin order creation
+
+
+
+
+
 
 require __DIR__.'/auth.php';
