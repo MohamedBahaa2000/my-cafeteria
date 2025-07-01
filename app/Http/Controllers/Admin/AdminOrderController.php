@@ -88,4 +88,13 @@ public function updateStatus(Request $request, $id)
     return redirect()->route('orders.show', $id)->with('success', 'Order status updated!');
 }
 
+public function destroy($id)
+{
+    $order = \App\Models\Order::findOrFail($id);
+    $order->delete();
+
+    return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
+}
+
+
 }

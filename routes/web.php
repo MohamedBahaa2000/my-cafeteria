@@ -56,6 +56,10 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::post('/', [AdminOrderController::class, 'store'])->name('store');
         Route::get('/{id}', [AdminOrderController::class, 'show'])->name('show');
         Route::post('/{id}/status', [AdminOrderController::class, 'updateStatus'])->name('status');
+        Route::delete('/{id}', [AdminOrderController::class, 'destroy'])->name('destroy');
+
+        
+        
     });
 
 

@@ -22,7 +22,7 @@
     <a href="{{ route('orders.index') }}?status=pending" class="text-decoration-none">
         <div class="card text-white bg-warning shadow-sm text-center">
             <div class="card-body">
-                <h6>Pending Orders</h6>
+                <h6>Pending</h6>
                 <h2>{{ $pendingOrders }}</h2>
             </div>
         </div>
@@ -33,19 +33,30 @@
     <a href="{{ route('orders.index') }}?status=delivered" class="text-decoration-none">
         <div class="card text-white bg-success shadow-sm text-center">
             <div class="card-body">
-                <h6>Delivered Orders</h6>
+                <h6>Delivered</h6>
                 <h2>{{ $deliveredOrders }}</h2>
             </div>
         </div>
     </a>
 </div>
+        <div class="col-md-3">
+    <a href="{{ route('orders.index') }}?status=processing" class="text-decoration-none">
+    <div class="card text-white bg-secondary warning shadow-sm rounded-4 text-center">
+        <div class="card-body">
+            <h5 class="card-title">Processing</h5>
+            <p class="card-text fs-3">{{ $processingOrders }}</p>
+        </div>
+    </div>
+    </a>
+</div>
+
 
         <div class="col-md-3">
     <a href="{{ route('orders.index') }}" class="text-decoration-none">
         <div class="card text-white bg-dark shadow-sm text-center">
             <div class="card-body">
                 <h6>Total Sales (EGP)</h6>
-                <h2>{{ number_format($totalSales, 2) }}</h2>
+                <h2>{{ number_format($sales, 2) }}</h2>
             </div>
         </div>
     </a>

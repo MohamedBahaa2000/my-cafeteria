@@ -41,29 +41,36 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($orders as $order)
-                <tr>
-                    <td>{{ $order->id }}</td>
-                    <td>{{ $order->user->name }}</td>
-                    <td>
-                        <span class="badge 
-                            @if($order->status == 'pending') bg-warning 
-                            @elseif($order->status == 'processing') bg-primary 
-                            @else bg-success 
-                            @endif">
-                            {{ ucfirst($order->status) }}
-                        </span>
-                    </td>
-                    <td>{{ $order->created_at->format('Y-m-d H:i') }}</td>
-                    <td>
-                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-info">Details</a>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5">No orders found.</td>
-                </tr>
-            @endforelse
+           @foreach ($orders as $order)
+    <tr>
+        <td>{{ $order->id }}</td>
+        <td>{{ $order->user->name }}</td>
+        <td>
+    @if($order->status === 'pending')
+        <span class="badge bg-warning text-dark">Pending</span>
+    @elseif($order->status === 'processing')
+        <span class="badge bg-info text-dark">Processing</span>
+    @elseif($order->status === 'delivered')
+        <span class="badge bg-success">Delivered</span>
+    @else
+        <span class="badge bg-secondary">Unknown</span>
+    @endif
+</td>
+
+        <td>{{ $order->created_at }}</td>
+        <td>
+            <a href="{{ route('orders.show', $order->id) }}" class="btn btn-sm btn-info">Details</a>
+
+            {{-- هنا نضيف زرار الحذف --}}
+            <form action="{{ route('orders.destroy', $order->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this order?');">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-sm btn-danger">Delete</button>
+            </form>
+        </td>
+    </tr>
+@endforeach
+
         </tbody>
     </table>
 </div>

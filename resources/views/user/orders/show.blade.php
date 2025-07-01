@@ -59,6 +59,15 @@
     <button type="submit" class="btn btn-danger">Cancel Order</button>
 </form>
 
+<!-- @if ($order->status === 'pending')
+    <div class="mt-3">
+        <a href="{{ route('shop') }}" class="btn btn-primary">
+            ➕ Add More Products
+        </a>
+    </div>
+@endif -->
+
+
 @endif
 
 

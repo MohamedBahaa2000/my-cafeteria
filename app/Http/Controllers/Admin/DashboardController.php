@@ -10,21 +10,26 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-     public function index()
-    {
-         $totalOrders = Order::count();
+    public function index()
+{
+    $totalOrders = Order::count();
     $pendingOrders = Order::where('status', 'pending')->count();
+    $processingOrders = Order::where('status', 'processing')->count(); // ✅ الجديد
     $deliveredOrders = Order::where('status', 'delivered')->count();
-    $totalSales = Order::with('items')
-        ->get()
+
+    $sales = Order::where('status', 'delivered')->with('items')->get()
         ->flatMap->items
-        ->sum(fn($item) => $item->price * $item->quantity);
+        ->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
 
     return view('admin.dashboard', compact(
         'totalOrders',
         'pendingOrders',
+        'processingOrders',
         'deliveredOrders',
-        'totalSales'
+        'sales'
     ));
-    }
+}
+
 }
