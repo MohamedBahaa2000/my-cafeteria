@@ -29,6 +29,17 @@
             <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control" required>
         </div>
 
+        <!-- Room Number -->
+<div class="mb-3">
+    <label for="room_number" class="form-label">Room Number</label>
+    <input type="text" name="room_number" class="form-control" id="room_number"
+           value="{{ old('room_number', $user->room_number) }}" required>
+    @error('room_number')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+</div>
+
+
         <div class="mb-3">
             <label class="form-label">New Password (optional)</label>
             <input type="password" name="password" class="form-control">

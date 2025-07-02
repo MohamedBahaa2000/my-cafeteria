@@ -8,6 +8,10 @@
 
     <div class="mb-4">
         <p><strong>User:</strong> {{ $order->user->name }}</p>
+         <li class="list-group-item">
+        <strong>Room Number:</strong> {{ $order->user->room_number ?? '-' }}
+    </li>
+    
         <p><strong>Status:</strong> <span class="badge 
             @if($order->status == 'pending') bg-warning 
             @elseif($order->status == 'processing') bg-primary 

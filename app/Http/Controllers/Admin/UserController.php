@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
@@ -21,19 +22,20 @@ class UserController extends Controller
 }
 
 public function store(Request $request)
-{
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users',
-        'password' => 'required|min:6|confirmed',
-        'is_admin' => 'boolean',
-    ]);
+{$request->validate([
+    'name' => 'required|string',
+    'email' => 'required|email|unique:users',
+    'password' => 'required|string|confirmed|min:6',
+    'room_number' => 'required|string|max:10',
+]);
 
-    $validated['password'] = bcrypt($validated['password']);
-
-    User::create($validated);
-
-    return redirect()->route('users.index')->with('success', 'User added successfully.');
+User::create([
+    'name' => $request->name,
+    'email' => $request->email,
+    'password' => Hash::make($request->password),
+    'room_number' => $request->room_number,
+]);
+   return redirect()->route('users.index')->with('success', 'User added successfully.');
 }
 
 public function edit($id)
@@ -50,6 +52,7 @@ public function update(Request $request, $id)
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email,' . $user->id,
         'password' => 'nullable|min:6|confirmed',
+        'room_number' => 'required|string|max:10',
         'is_admin' => 'boolean',
     ]);
 

@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container py-4">
-    <h2 class="mb-4 text-center">➕ Add New User</h2>
+    <h2 class="mb-4 text-center"> Add New User</h2>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -27,6 +27,12 @@
             <label class="form-label">Email</label>
             <input type="email" name="email" value="{{ old('email') }}" class="form-control" required>
         </div>
+
+        <div class="mb-3">
+    <label class="form-label">Room Number</label>
+    <input type="text" name="room_number" value="{{ old('room_number') }}" required>
+</div>
+
 
         <div class="mb-3">
             <label class="form-label">Password</label>
