@@ -4,73 +4,65 @@
 
 @section('content')
 <div class="container py-4">
-    <h2 class="mb-4 text-center">Order #{{ $order->id }} Details</h2>
+    <h2 class="mb-4 text-center">🧾 Order #{{ $order->id }} Details</h2>
 
-    <p><strong>Status:</strong> 
-        <span class="badge 
-            @if($order->status == 'pending') bg-warning 
-            @elseif($order->status == 'processing') bg-primary 
-            @else bg-success 
-            @endif">
-            {{ ucfirst($order->status) }}
-        </span>
-    </p>
-
-    <table class="table table-bordered text-center align-middle mt-3">
-        <thead class="table-light">
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php $total = 0; @endphp
-            @foreach($order->items as $item)
-                @php 
-                    $lineTotal = $item->price * $item->quantity;
-                    $total += $lineTotal;
-                @endphp
-                <tr>
-                    <td>{{ $item->product->name ?? 'Deleted Product' }}</td>
-                    <td>{{ number_format($item->price, 2) }}</td>
-                    <td>{{ $item->quantity }}</td>
-                    <td>{{ number_format($lineTotal, 2) }}</td>
-                </tr>
-                @if($item->product && $item->product->image)
-    <img src="{{ asset('storage/' . $item->product->image) }}" alt="">
-@else
-    <span class="text-muted">No image</span>
-@endif
-
-            @endforeach
-            <tr class="fw-bold">
-                <td colspan="3">Total</td>
-                <td>{{ number_format($total, 2) }} EGP</td>
-            </tr>
-        </tbody>
-    </table>
-
-    @if($order->status === 'pending')
-    <form action="{{ route('myorders.cancel', $order->id) }}" method="POST">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="btn btn-danger">Cancel Order</button>
-</form>
-
-<!-- @if ($order->status === 'pending')
-    <div class="mt-3">
-        <a href="{{ route('shop') }}" class="btn btn-primary">
-            ➕ Add More Products
-        </a>
+    <div class="mb-4">
+        <strong>Status:</strong>
+        @if($order->status === 'pending')
+            <span class="badge bg-warning text-dark">Pending</span>
+        @elseif($order->status === 'processing')
+            <span class="badge bg-info text-dark">Processing</span>
+        @elseif($order->status === 'delivered')
+            <span class="badge bg-success">Delivered</span>
+        @else
+            <span class="badge bg-secondary">{{ ucfirst($order->status) }}</span>
+        @endif
     </div>
-@endif -->
 
+    <h5 class="mb-3">🛍️ Products in this Order</h5>
 
+    <div class="row">
+        @foreach($order->items as $item)
+            @php
+                $product = $item->product;
+            @endphp
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            @if($product && $product->image)
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="img-fluid rounded-start" style="height: 100%; object-fit: cover;">
+                            @else
+                                <img src="{{ asset('assets/images/no-image.png') }}" alt="No Image" class="img-fluid rounded-start" style="height: 100%; object-fit: cover;">
+                            @endif
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $product->name ?? 'Deleted Product' }}</h5>
+                                <p class="card-text text-muted small">Category: {{ $product->category->name ?? '-' }}</p>
+                                <p class="card-text">Price: {{ number_format($item->price, 2) }} EGP</p>
+                                <p class="card-text">Quantity: {{ $item->quantity }}</p>
+                                <p class="card-text fw-bold">Subtotal: {{ number_format($item->price * $item->quantity, 2) }} EGP</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+    <hr>
+    <div class="text-end fw-bold fs-5">
+        Total: {{ number_format($order->items->sum(fn($i) => $i->price * $i->quantity), 2) }} EGP
+    </div>
+     @if($order->status === 'pending')
+    <form action="{{ route('myorders.cancel', $order->id) }}" method="POST" class="mt-4 text-center" onsubmit="return confirm('Are you sure you want to cancel this order?');">
+        @csrf
+        @method('DELETE')
+        <button class="btn btn-danger px-4"> Cancel This Order</button>
+    </form>
 @endif
 
-
-    <a href="{{ route('myorders.index') }}" class="btn btn-secondary mt-3">← Back to Orders</a>
+    
 </div>
 @endsection

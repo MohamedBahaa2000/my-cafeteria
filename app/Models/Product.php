@@ -9,11 +9,16 @@ class Product extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'price', 'is_available', 'image'];
+    protected $fillable = ['name', 'price', 'category_id', 'is_available', 'image'];
 
     public function orderItems()
 {
     return $this->hasMany(OrderItem::class);
 }
+public function category()
+{
+    return $this->belongsTo(Category::class);
+}
+
 
 }

@@ -8,13 +8,24 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
 
 class ProductShopController extends Controller
 {
-    public function index()
+    public function index(request $request)
     {
-        $products = Product::where('is_available', true)->get();
-        return view('user.products', compact('products'));
+        $categoryId = $request->query('category');
+
+    $query = Product::where('is_available', true);
+
+    if ($categoryId) {
+        $query->where('category_id', $categoryId);
+    }
+
+    $products = $query->latest()->paginate(12);
+    $categories = Category::all();
+
+    return view('user.shop.index', compact('products', 'categories', 'categoryId'));
     }
 
     public function addToCart(Request $request, $id)
@@ -41,10 +52,24 @@ class ProductShopController extends Controller
     }
 
     public function viewCart()
-    {
-        $cart = session('cart', []);
-        return view('user.cart', compact('cart'));
+{
+    $cart = session()->get('cart', []);
+    $cartItems = [];
+
+    foreach ($cart as $productId => $item) {
+        $product = Product::with('category')->find($productId);
+
+        if ($product) {
+            $cartItems[] = [
+                'product' => $product,
+                'quantity' => $item['quantity'],
+            ];
+        }
     }
+
+    return view('user.cart.index', compact('cartItems'));
+}
+
 
     public function placeOrder()
     {
@@ -72,4 +97,16 @@ class ProductShopController extends Controller
 
         return redirect()->route('shop')->with('success', 'Order placed successfully!');
     }
+    public function removeFromCart($id)
+{
+    $cart = session()->get('cart', []);
+
+    if (isset($cart[$id])) {
+        unset($cart[$id]);
+        session()->put('cart', $cart);
+    }
+
+    return redirect()->route('cart.view')->with('success', 'Product removed from cart.');
+}
+
 }

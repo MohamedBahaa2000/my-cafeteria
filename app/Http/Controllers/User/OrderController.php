@@ -11,7 +11,8 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::where('user_id', Auth::id())->latest()->get();
+        $orders = Order::with('items')->where('user_id', Auth::id())->latest()->paginate(10);
+
         return view('user.orders.index', compact('orders'));
     }
 
@@ -24,15 +25,18 @@ class OrderController extends Controller
 
         return view('user.orders.show', compact('order'));
     }
+
+    
+
     public function cancel($id)
 {
-    $order = Order::where('user_id', Auth::id())
+     $order = Order::where('user_id', Auth::id())
                   ->where('status', 'pending')
                   ->findOrFail($id);
 
     $order->delete();
 
-    return redirect()->route('myorders.index')->with('success', 'Order cancelled.');
+    return redirect()->route('myorders.index')->with('success', 'Order cancelled successfully.');
 }
 
 }

@@ -17,35 +17,39 @@
         <p><strong>Ordered at:</strong> {{ $order->created_at->format('Y-m-d H:i') }}</p>
     </div>
 
-    <table class="table table-bordered text-center align-middle">
-        <thead class="table-light">
+    <h4 class="mb-3">🛍️ Order Items</h4>
+
+<table class="table table-bordered text-center align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Product</th>
+            <th>Image</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($order->items as $item)
             <tr>
-                <th>Product</th>
-                <th>Price (EGP)</th>
-                <th>Quantity</th>
-                <th>Total (EGP)</th>
+                <td>{{ $item->product->name ?? 'Product Deleted' }}</td>
+                <td>
+                    @if($item->product && $item->product->image)
+                        <img src="{{ asset('storage/' . $item->product->image) }}" width="70" alt="Product Image">
+                    @else
+                        <span class="text-muted">No Image</span>
+                    @endif
+                </td>
+                <td>{{ $item->product->category->name ?? '-' }}</td>
+                <td>{{ number_format($item->price, 2) }} EGP</td>
+                <td>{{ $item->quantity }}</td>
+                <td>{{ number_format($item->price * $item->quantity, 2) }} EGP</td>
             </tr>
-        </thead>
-        <tbody>
-            @php $grandTotal = 0; @endphp
-            @foreach($order->items as $item)
-                @php
-                    $total = $item->price * $item->quantity;
-                    $grandTotal += $total;
-                @endphp
-                <tr>
-                    <td>{{ $item->product->name ?? 'N/A' }}</td>
-                    <td>{{ number_format($item->price, 2) }}</td>
-                    <td>{{ $item->quantity }}</td>
-                    <td>{{ number_format($total, 2) }}</td>
-                </tr>
-            @endforeach
-            <tr class="fw-bold">
-                <td colspan="3">Grand Total</td>
-                <td>{{ number_format($grandTotal, 2) }} EGP</td>
-            </tr>
-        </tbody>
-    </table>
+        @endforeach
+    </tbody>
+</table>
+
 
     <form action="{{ route('orders.status', $order->id) }}" method="POST" class="mb-4">
     @csrf

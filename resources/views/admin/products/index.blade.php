@@ -14,10 +14,25 @@
         <a href="{{ route('products.create') }}" class="btn btn-primary">Add New Product</a>
     </div>
 
+    <form method="GET" action="{{ route('products.index') }}" class="row mb-3">
+    <div class="col-md-4">
+        <select name="category" class="form-select" onchange="this.form.submit()">
+            <option value="">-- All Categories --</option>
+            @foreach($categories as $cat)
+                <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
+                    {{ $cat->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+</form>
+
+
     <table class="table table-bordered text-center align-middle">
         <thead class="table-light">
             <tr>
                 <th>Name</th>
+                <th>Category</th>
                 <th>Price</th>
                 <th>Image</th>
                 <th>Status</th>
@@ -28,6 +43,7 @@
             @forelse($products as $product)
                 <tr>
                     <td>{{ $product->name }}</td>
+                     <td>{{ $product->category->name ?? '-' }}</td>
                     <td>{{ $product->price }} EGP</td>
                     <td>
                         @if($product->image)

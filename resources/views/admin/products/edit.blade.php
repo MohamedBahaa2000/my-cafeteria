@@ -31,6 +31,19 @@
         </div>
 
         <div class="mb-3">
+    <label for="category_id" class="form-label">Category</label>
+    <select name="category_id" id="category_id" class="form-select" required>
+        <option value="">-- Choose Category --</option>
+        @foreach($categories as $cat)
+            <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>
+                {{ $cat->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
+
+        <div class="mb-3">
             <label for="image" class="form-label">Product Image:</label><br>
             @if ($product->image)
                 <img src="{{ asset('storage/' . $product->image) }}" alt="Current Image" width="100" class="mb-2"><br>

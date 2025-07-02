@@ -11,7 +11,7 @@
     @endif
 
 <a href="{{ route('orders.create') }}" class="btn btn-success mb-4">
-    ➕ Create Order
+     Create Order
 </a>
 
 

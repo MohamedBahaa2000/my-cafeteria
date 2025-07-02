@@ -1,10 +1,12 @@
 @extends('layouts.app')
+
 @section('title', 'Create Order')
 
 @section('content')
 <div class="container py-4">
     <h2 class="mb-4 text-center">🧾 Create Order for User</h2>
 
+    {{-- رسائل الخطأ --}}
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul class="mb-0">
@@ -15,12 +17,12 @@
         </div>
     @endif
 
+    {{-- اختيار المستخدم --}}
     <form method="POST" action="{{ route('orders.store') }}">
         @csrf
 
-        {{-- اختيار المستخدم --}}
-        <div class="mb-3">
-            <label for="user_id" class="form-label">User</label>
+        <div class="mb-4">
+            <label class="form-label">User</label>
             <select name="user_id" class="form-select" required>
                 <option value="">Choose User</option>
                 @foreach($users as $user)
@@ -29,23 +31,37 @@
             </select>
         </div>
 
-        {{-- اختيار المنتجات والكمية --}}
-        <h5 class="mt-4 mb-2">Products</h5>
+        <h5 class="mb-3">🛒 Choose Products</h5>
 
-        @foreach($products as $product)
-        <div class="card mb-2 p-3 shadow-sm">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <strong>{{ $product->name }}</strong> - {{ number_format($product->price, 2) }} EGP
+        {{-- المنتجات --}}
+        <div class="row">
+            @foreach($products as $product)
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        @if($product->image)
+                            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                        @else
+                            <img src="{{ asset('assets/images/no-image.png') }}" class="card-img-top" alt="No image" style="height: 200px; object-fit: cover;">
+                        @endif
+
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="card-title">{{ $product->name }}</h5>
+                                <p class="text-muted mb-1">Category: {{ $product->category->name ?? '-' }}</p>
+                                <p class="fw-bold">{{ number_format($product->price, 2) }} EGP</p>
+                            </div>
+
+                            <input type="hidden" name="products[{{ $loop->index }}][id]" value="{{ $product->id }}">
+                            <input type="number" name="products[{{ $loop->index }}][quantity]" class="form-control mt-2" min="0" placeholder="Quantity">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <input type="number" name="products[{{ $product->id }}]" min="0" class="form-control" placeholder="Quantity">
-                </div>
-            </div>
+            @endforeach
         </div>
-        @endforeach
 
-        <button type="submit" class="btn btn-success mt-3">Submit Order</button>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success"> Submit Order</button>
+        </div>
     </form>
 </div>
 @endsection

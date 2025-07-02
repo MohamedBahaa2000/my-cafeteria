@@ -30,6 +30,23 @@
     </div>
 
     <div class="mb-3">
+    <label for="category_id" class="form-label">Category</label>
+    <div class="d-flex gap-2">
+        <select name="category_id" id="category_id" class="form-select" required>
+            <option value="">-- Choose Category --</option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+
+        <a href="{{ route('categories.create') }}" class="btn btn-outline-primary">
+             Add Category
+        </a>
+    </div>
+</div>
+
+
+    <div class="mb-3">
         <label>Image</label>
         <input type="file" name="image" accept="image/*" class="form-control">
     </div>

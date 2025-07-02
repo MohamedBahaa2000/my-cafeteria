@@ -45,6 +45,10 @@
     <a class="nav-link" href="{{ route('orders.index') }}">🧾 Manage Orders</a>
 </li>
 
+ <li class="nav-item">
+        <a class="nav-link" href="{{ route('categories.index') }}">📁 Categories</a>
+    </li>
+
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.dashboard') }}">📊 Dashboard</a>
     </li>

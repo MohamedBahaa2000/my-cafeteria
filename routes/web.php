@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\CategoryController;
 
 
 
@@ -44,6 +45,7 @@ Route::get('/shop', [ProductShopController::class, 'index'])->name('shop');
 Route::post('/cart/add/{id}', [ProductShopController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [ProductShopController::class, 'viewCart'])->name('cart.view');
 Route::post('/cart/place-order', [ProductShopController::class, 'placeOrder'])->name('cart.order');
+ Route::delete('/cart/remove/{id}', [ProductShopController::class, 'removeFromCart'])->name('cart.remove');
 });
 
 // admin orders
@@ -75,6 +77,7 @@ Route::post('/', [UserController::class, 'store'])->name('store');
 Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
 Route::put('/{id}', [UserController::class, 'update'])->name('update');
 Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy'); });
+Route::delete('/{id}/cancel', [UserOrderController::class, 'cancel'])->name('cancel');
 
 
 // user orders
@@ -83,7 +86,17 @@ Route::get('/', [UserOrderController::class, 'index'])->name('index');
 Route::get('/{id}', [UserOrderController::class, 'show'])->name('show');
 Route::delete('/{id}/cancel', [UserOrderController::class, 'cancel'])->name('cancel');});
 
-// admin order creation
+// category
+Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin/categories')->name('categories.')->group(function () {
+    Route::get('/', [CategoryController::class, 'index'])->name('index'); 
+    Route::get('/create', [CategoryController::class, 'create'])->name('create');
+    Route::post('/', [CategoryController::class, 'store'])->name('store');
+     Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [CategoryController::class, 'update'])->name('update');
+        Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
+
+});
+
 
 
 

@@ -35,8 +35,7 @@ class AdminOrderController extends Controller
 }
     public function show($id)
 {
-    $order = \App\Models\Order::with(['user', 'items.product'])->findOrFail($id);
-
+    $order = \App\Models\Order::with(['user', 'items.product.category'])->findOrFail($id);
     return view('admin.orders.show', compact('order'));
 }
 
@@ -61,16 +60,24 @@ public function store(Request $request)
         'status' => 'pending',
     ]);
 
-    foreach ($request->products as $productId => $quantity) {
-        if ($quantity > 0) {
-            $product = \App\Models\Product::find($productId);
-            $order->items()->create([
-                'product_id' => $product->id,
-                'price' => $product->price,
-                'quantity' => $quantity,
-            ]);
-        }
+    foreach ($request->products as $item) {
+    // لو الكمية مش موجودة أو بصفر، تجاهل المنتج ده
+    if (empty($item['quantity']) || $item['quantity'] < 1) {
+        continue;
     }
+
+    $product = Product::find($item['id']);
+    if (!$product) {
+        continue;
+    }
+
+    $order->items()->create([
+        'product_id' => $product->id,
+        'price' => $product->price,
+        'quantity' => $item['quantity'],
+    ]);
+}
+
 
     return redirect()->route('orders.index')->with('success', 'Order created successfully.');
 }
