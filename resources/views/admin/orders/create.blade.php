@@ -4,7 +4,11 @@
 
 @section('content')
 <div class="container py-4">
-    <h2 class="mb-4 text-center">🧾 Create Order for User</h2>
+    <div class="text-center mb-4">
+    <h2 class="section-title">🧾 Create Order for User</h2>
+    <div class="divider"></div>
+</div>
+
 
     {{-- رسائل الخطأ --}}
     @if ($errors->any())

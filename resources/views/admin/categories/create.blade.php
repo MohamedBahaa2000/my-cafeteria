@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="glass-card">
     <h2 class="mb-4">Add Category</h2>
 
     <form action="{{ route('categories.store') }}" method="POST">
@@ -12,7 +12,7 @@
             <input type="text" name="name" id="name" class="form-control" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-coffee"> Save</button>
     </form>
 </div>
 @endsection

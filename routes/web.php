@@ -13,7 +13,10 @@ use App\Http\Controllers\Admin\CategoryController;
 
 
 
-Route::get('/', function () {return view('welcome');});
+Route::get('/', function () {
+    return view('home'); // أو welcome حسب التسمية اللي اخترتها
+});
+
 
 Route::get('/dashboard', function () {return view('dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
 

@@ -3,20 +3,20 @@
 @section('title', 'Shopping Cart')
 
 @section('content')
-<div class="container py-4">
-    <h2 class="mb-4 text-center">🛒 My Cart</h2>
+<div class="container py-4 coffee-cart-container">
+    <h2 class="coffee-cart-title">🛒 My Cart</h2>
 
     @if(session('success'))
-        <div class="alert alert-success text-center">{{ session('success') }}</div>
+        <div class="alert coffee-alert-success">{{ session('success') }}</div>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-danger text-center">{{ session('error') }}</div>
+        <div class="alert coffee-alert-danger">{{ session('error') }}</div>
     @endif
 
     @if(count($cartItems) > 0)
-        <table class="table table-bordered text-center align-middle">
-            <thead class="table-light">
+        <table class="table coffee-cart-table">
+            <thead class="coffee-thead">
                 <tr>
                     <th>Image</th>
                     <th>Product</th>
@@ -37,33 +37,33 @@
                         $total += $subtotal;
                     @endphp
 
-                    <tr>
+                    <tr class="coffee-tr">
                         <td>
                             @if($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" width="70" alt="Product Image">
+                                <img src="{{ asset('storage/' . $product->image) }}" width="70" alt="Product Image" class="coffee-product-img">
                             @else
-                                <img src="{{ asset('assets/images/no-image.png') }}" width="70" alt="No Image">
+                                <img src="{{ asset('assets/images/no-image.png') }}" width="70" alt="No Image" class="coffee-product-img">
                             @endif
                         </td>
 
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->category->name ?? '-' }}</td>
-                        <td>{{ number_format($product->price, 2) }} EGP</td>
+                        <td class="coffee-price">{{ number_format($product->price, 2) }} EGP</td>
                         <td>{{ $item['quantity'] }}</td>
-                        <td>{{ number_format($subtotal, 2) }} EGP</td>
+                        <td class="coffee-price">{{ number_format($subtotal, 2) }} EGP</td>
                         <td>
                             <form action="{{ route('cart.remove', $product->id) }}" method="POST" onsubmit="return confirm('Remove this item?')">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-sm btn-danger"> Remove</button>
+                                <button class="btn coffee-btn-remove">Remove</button>
                             </form>
                         </td>
                     </tr>
                 @endforeach
 
-                <tr class="table-secondary">
+                <tr class="coffee-total-tr">
                     <td colspan="5" class="text-end fw-bold">Total</td>
-                    <td colspan="2" class="fw-bold">{{ number_format($total, 2) }} EGP</td>
+                    <td colspan="2" class="fw-bold coffee-total-price">{{ number_format($total, 2) }} EGP</td>
                 </tr>
             </tbody>
         </table>
@@ -71,13 +71,14 @@
         <div class="text-center mt-4">
             <form method="POST" action="{{ route('cart.order') }}">
                 @csrf
-                <button class="btn btn-success px-4"> Place Order</button>
+                <button class="btn coffee-btn-order">Place Order</button>
             </form>
         </div>
     @else
-        <div class="alert alert-info text-center">
+        <div class="alert coffee-alert-info">
             Your cart is empty.
         </div>
     @endif
 </div>
+
 @endsection

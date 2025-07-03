@@ -3,10 +3,13 @@
 
 @section('content')
 <div class="container py-4">
-    <h2 class="mb-4 text-center"> Add New User</h2>
+    <div class="text-center mb-4 section-header">
+        <h2 class="section-title"> Add New User</h2>
+        <div class="divider mx-auto"></div>
+    </div>
 
     @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert coffee-alert-danger">
             <ul class="mb-0">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -15,7 +18,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('users.store') }}" class="card p-4 shadow-sm rounded-4">
+    <form method="POST" action="{{ route('users.store') }}" class="card p-4 shadow-sm rounded-4 bg-white">
         @csrf
 
         <div class="mb-3">
@@ -29,10 +32,9 @@
         </div>
 
         <div class="mb-3">
-    <label class="form-label">Room Number</label>
-    <input type="text" name="room_number" value="{{ old('room_number') }}" required>
-</div>
-
+            <label class="form-label">Room Number</label>
+            <input type="text" name="room_number" value="{{ old('room_number') }}" class="form-control" required>
+        </div>
 
         <div class="mb-3">
             <label class="form-label">Password</label>
@@ -44,15 +46,11 @@
             <input type="password" name="password_confirmation" class="form-control" required>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Is Admin?</label>
-            <select name="is_admin" class="form-select">
-                <option value="0" selected>No</option>
-                <option value="1">Yes</option>
-            </select>
-        </div>
+        
 
-        <button class="btn btn-success">Save</button>
+        <div class="text-end">
+            <button class="btn btn-coffee">Save</button>
+        </div>
     </form>
 </div>
 @endsection

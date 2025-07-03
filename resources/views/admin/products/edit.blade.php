@@ -4,10 +4,13 @@
 
 @section('content')
 <div class="container py-4">
-    <h2 class="mb-4 text-center">Edit Product</h2>
+    <div class="text-center mb-4 section-header">
+        <h2 class="section-title"> Edit Product</h2>
+        <div class="divider mx-auto"></div>
+    </div>
 
     @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert coffee-alert-danger">
             <ul class="mb-0">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -16,7 +19,7 @@
         </div>
     @endif
 
-    <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data" class="card p-4 shadow-sm rounded-4">
         @csrf
         @method('PUT')
 
@@ -31,22 +34,21 @@
         </div>
 
         <div class="mb-3">
-    <label for="category_id" class="form-label">Category</label>
-    <select name="category_id" id="category_id" class="form-select" required>
-        <option value="">-- Choose Category --</option>
-        @foreach($categories as $cat)
-            <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>
-                {{ $cat->name }}
-            </option>
-        @endforeach
-    </select>
-</div>
-
+            <label for="category_id" class="form-label">Category</label>
+            <select name="category_id" id="category_id" class="form-select" required>
+                <option value="">-- Choose Category --</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>
+                        {{ $cat->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
         <div class="mb-3">
             <label for="image" class="form-label">Product Image:</label><br>
             @if ($product->image)
-                <img src="{{ asset('storage/' . $product->image) }}" alt="Current Image" width="100" class="mb-2"><br>
+                <img src="{{ asset('storage/' . $product->image) }}" alt="Current Image" class="product-img mb-2"><br>
             @endif
             <input type="file" class="form-control" name="image" id="image" accept="image/*">
         </div>
@@ -54,13 +56,13 @@
         <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" name="is_available" id="is_available" {{ $product->is_available ? 'checked' : '' }}>
             <label class="form-check-label" for="is_available">
-                Available for sale
+                 Available for sale
             </label>
         </div>
 
         <div class="text-end">
-            <button type="submit" class="btn btn-primary">Update Product</button>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn coffee-btn-order">Update Product</button>
+            <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">Cancel</a>
         </div>
     </form>
 </div>

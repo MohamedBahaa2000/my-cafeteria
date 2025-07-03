@@ -3,10 +3,13 @@
 
 @section('content')
 <div class="container py-4">
-    <h2 class="mb-4 text-center">✏️ Edit User</h2>
+    <div class="text-center mb-4 section-header">
+        <h2 class="section-title"> Edit User</h2>
+        <div class="divider mx-auto"></div>
+    </div>
 
     @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert coffee-alert-danger">
             <ul class="mb-0">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -15,7 +18,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('users.update', $user->id) }}" class="card p-4 shadow-sm rounded-4">
+    <form method="POST" action="{{ route('users.update', $user->id) }}" class="card p-4 shadow-sm rounded-4 bg-white">
         @csrf
         @method('PUT')
 
@@ -29,16 +32,14 @@
             <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control" required>
         </div>
 
-        <!-- Room Number -->
-<div class="mb-3">
-    <label for="room_number" class="form-label">Room Number</label>
-    <input type="text" name="room_number" class="form-control" id="room_number"
-           value="{{ old('room_number', $user->room_number) }}" required>
-    @error('room_number')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-</div>
-
+        <div class="mb-3">
+            <label for="room_number" class="form-label">Room Number</label>
+            <input type="text" name="room_number" class="form-control" id="room_number"
+                   value="{{ old('room_number', $user->room_number) }}" required>
+            @error('room_number')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
 
         <div class="mb-3">
             <label class="form-label">New Password (optional)</label>
@@ -58,7 +59,9 @@
             </select>
         </div>
 
-        <button class="btn btn-primary">Update</button>
+        <div class="text-end">
+            <button class="btn btn-coffee">Update</button>
+        </div>
     </form>
 </div>
 @endsection
